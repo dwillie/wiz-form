@@ -1,4 +1,4 @@
-angular.module("asset.common.partials.wiz", [])
+angular.module("wiz", [])
 
 .directive "wizForm", ->
   restrict: "E"
