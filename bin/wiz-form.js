@@ -1,7 +1,7 @@
 angular.module('wiz', []).directive('wizForm', function () {
   return {
     restrict: 'E',
-    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div class="row">\n\n    <div class="pull-left">\n      <button class="btn btn-default" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || (\'_Previous_\' | i18n) }}\n      </button>\n    </div>\n\n    <div class="pull-right">\n      <div class="row error">\n        <span ng-show="isError"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>\n        <button class="btn btn-primary" ng-click="nextStep()">\n          <span ng-hide="lastStep()">{{ nextText() || (\'_Next_\' | i18n) }}</span>\n          <span ng-show="lastStep()">{{ nextText() || (\'_Finish_\' | i18n) }}</span>\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
+    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div class="row">\n\n    <div class="pull-left">\n      <button class="btn btn-default" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="pull-right">\n      <div class="row error">\n        <span ng-show="isError"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>\n        <button class="btn btn-primary" ng-click="nextStep()">\n          <span ng-hide="lastStep()">{{ nextText() || \'Next\' }}</span>\n          <span ng-show="lastStep()">{{ nextText() || \'Finish\' }}</span>\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
     transclude: true,
     replace: true,
     scope: {
