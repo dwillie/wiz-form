@@ -3,21 +3,21 @@
   <div ng-transclude class="inner">
   </div>
 
-  <div class="row-fluid controls">
+  <div class="row">
 
-    <div class="left-controls">
-      <div class="control-button secondary-control" ng-click="previousStep()" ng-show="currentStep > 0">
+    <div class="pull-left">
+      <button class="btn btn-default" ng-click="previousStep()" ng-show="currentStep > 0">
         {{ previousText() || ('_Previous_' | i18n) }}
-      </div>
+      </button>
     </div>
 
-    <div class="right-controls">
-      <div class="row-fluid error">
+    <div class="pull-right">
+      <div class="row error">
         <span ng-show="isError"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>
-        <div class="control-button primary-control" ng-click="nextStep()">
+        <button class="btn btn-primary" ng-click="nextStep()">
           <span ng-hide="lastStep()">{{ nextText() || ('_Next_' | i18n) }}</span>
           <span ng-show="lastStep()">{{ nextText() || ('_Finish_' | i18n) }}</span>
-        </div>
+        </button>
       </div>
     </div>
 
