@@ -12,7 +12,7 @@ angular.module("wiz", [])
 
     <div class="pull-left">
       <button class="btn btn-default" ng-click="previousStep()" ng-show="currentStep > 0">
-        {{ previousText() || ('_Previous_' | i18n) }}
+        {{ previousText() || 'Previous' }}
       </button>
     </div>
 
@@ -20,8 +20,8 @@ angular.module("wiz", [])
       <div class="row error">
         <span ng-show="isError"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>
         <button class="btn btn-primary" ng-click="nextStep()">
-          <span ng-hide="lastStep()">{{ nextText() || ('_Next_' | i18n) }}</span>
-          <span ng-show="lastStep()">{{ nextText() || ('_Finish_' | i18n) }}</span>
+          <span ng-hide="lastStep()">{{ nextText() || 'Next' }}</span>
+          <span ng-show="lastStep()">{{ nextText() || 'Finish' }}</span>
         </button>
       </div>
     </div>
