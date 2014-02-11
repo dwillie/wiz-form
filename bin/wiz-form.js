@@ -1,7 +1,7 @@
 angular.module('asset.common.partials.wiz', []).directive('wizForm', function () {
   return {
     restrict: 'E',
-    templateUrl: 'common/partials/templates/wiz-form.tpl.html',
+    templateUrl: 'templates/wiz-form.tpl.html',
     transclude: true,
     replace: true,
     scope: {
@@ -79,7 +79,7 @@ angular.module('asset.common.partials.wiz', []).directive('wizForm', function ()
 }).directive('wizStep', function () {
   return {
     restrict: 'E',
-    template: '<div><div ng-transclude></div></div>',
+    template: '<div ng-show=\'wizFormCtrl.getCurrentStep() == stepIndex\'><div ng-transclude></div></div>',
     transclude: true,
     replace: true,
     require: '^wizForm',
@@ -89,24 +89,16 @@ angular.module('asset.common.partials.wiz', []).directive('wizForm', function ()
       previousText: '@'
     },
     link: function ($scope, elem, attrs, wizFormCtrl) {
-      var stepIndex;
+      $scope.wizFormCtrl = wizFormCtrl;
       if (!attrs.readyCheck) {
         $scope.readyCheck = null;
       }
-      stepIndex = wizFormCtrl.registerStep({
+      return $scope.stepIndex = wizFormCtrl.registerStep({
         name: attrs.name,
         element: elem,
         ready_check: $scope.readyCheck,
         next_text: $scope.nextText,
         previous_text: $scope.previousText
-      });
-      $scope.wizFormCtrl = wizFormCtrl;
-      return $scope.$watch('wizFormCtrl.getCurrentStep()', function () {
-        if (wizFormCtrl.getCurrentStep() === stepIndex) {
-          return elem.show();
-        } else {
-          return elem.hide();
-        }
       });
     }
   };

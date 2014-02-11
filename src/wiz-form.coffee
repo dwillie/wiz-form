@@ -2,7 +2,7 @@ angular.module("asset.common.partials.wiz", [])
 
 .directive "wizForm", ->
   restrict: "E"
-  templateUrl: "common/partials/templates/wiz-form.tpl.html"
+  templateUrl: "templates/wiz-form.tpl.html"
   transclude: true
   replace: true
   scope: {
