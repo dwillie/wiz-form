@@ -63,7 +63,7 @@ angular.module("asset.common.partials.wiz", [])
 
 .directive "wizStep", ->
   restrict:    "E"
-  templateUrl: "common/partials/templates/wiz-step.tpl.html"
+  template: "<div ng-show='wizFormCtrl.getCurrentStep() == stepIndex'><div ng-transclude></div></div>"
   transclude:  true
   replace:     true
   require: "^wizForm"
@@ -72,19 +72,13 @@ angular.module("asset.common.partials.wiz", [])
     nextText:     "@"
     previousText: "@"
   link: ($scope, elem, attrs, wizFormCtrl) ->
+    $scope.wizFormCtrl = wizFormCtrl
     unless attrs.readyCheck
       $scope.readyCheck = null
-
-    stepIndex = wizFormCtrl.registerStep({
+    $scope.stepIndex = wizFormCtrl.registerStep({
       name:          attrs.name,
       element:       elem,
       ready_check:   $scope.readyCheck
       next_text:     $scope.nextText
       previous_text: $scope.previousText
     })
-    $scope.wizFormCtrl = wizFormCtrl
-    $scope.$watch "wizFormCtrl.getCurrentStep()", ->
-      if wizFormCtrl.getCurrentStep() == stepIndex
-        elem.show()
-      else
-        elem.hide()
