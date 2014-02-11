@@ -2,7 +2,33 @@ angular.module("wiz", [])
 
 .directive "wizForm", ->
   restrict: "E"
-  templateUrl: "templates/wiz-form.tpl.html"
+  template: """
+<div class="wizard-body">
+  
+  <div ng-transclude class="inner">
+  </div>
+
+  <div class="row">
+
+    <div class="pull-left">
+      <button class="btn btn-default" ng-click="previousStep()" ng-show="currentStep > 0">
+        {{ previousText() || ('_Previous_' | i18n) }}
+      </button>
+    </div>
+
+    <div class="pull-right">
+      <div class="row error">
+        <span ng-show="isError"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>
+        <button class="btn btn-primary" ng-click="nextStep()">
+          <span ng-hide="lastStep()">{{ nextText() || ('_Next_' | i18n) }}</span>
+          <span ng-show="lastStep()">{{ nextText() || ('_Finish_' | i18n) }}</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+"""
   transclude: true
   replace: true
   scope: {

@@ -27,12 +27,6 @@ module.exports = (grunt) ->
         cwd: "src"
         dest: "bin"
         ext: ".js"
-    copy:
-      files:
-        src: [ '*.tpl.html' ],
-        dest: 'bin/templates',
-        cwd: 'src'
-        expand: true
     ngmin:
       files:
         src: [ "<%= pkg.name %>.js" ]
@@ -51,7 +45,7 @@ module.exports = (grunt) ->
       tasks: [ "coffeelint", "coffee" ]
 
   # Register build task.
-  grunt.registerTask "build", [ "clean", "coffeelint", "coffee", "copy", "ngmin", "uglify" ]
+  grunt.registerTask "build", [ "clean", "coffeelint", "coffee", "ngmin", "uglify" ]
 
   # Register watch task. This task does a build before watching.
   grunt.renameTask "watch", "delta"
