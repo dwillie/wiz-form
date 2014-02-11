@@ -1,4 +1,4 @@
-angular.module('asset.common.partials.wiz', []).directive('wizForm', function () {
+angular.module('wiz', []).directive('wizForm', function () {
   return {
     restrict: 'E',
     templateUrl: 'templates/wiz-form.tpl.html',
