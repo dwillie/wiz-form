@@ -7,6 +7,7 @@ wiz-form supports the following:
 
 * Automatically calling a function at the end of the wizard
 * 'ReadyCheck' to determine whether the user should be able to proceed to the next step (expression/function)
+* Error messages on failed ready-check
 * Next/Previous/Finish button text override
 * Step naming
 * wizard-meta allowing access to internal wizard info, current step index, total number of steps and 'name' of the current step
@@ -16,11 +17,22 @@ Happy to hear suggestions on the direction of wiz
 
 Install
 -------
+
     bower install wiz-form
+
 That'll do the trick. If you're looking for a specific version check the tags on this repo and tack it on the end e.g.
 
     bower install wiz-form 0.0.4
 
+Then just whack it in your module...
+
+```coffeescript
+angular.module('myModule', [
+  'wiz'
+])
+```
+
+And you're ready to use it.
 
 Usage
 -----
