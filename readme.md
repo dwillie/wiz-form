@@ -24,104 +24,121 @@ That'll do the trick. If you're looking for a specific version check the tags on
 
 Usage
 -----
-    <wiz-form>
-        <wiz-step>
-            <p>This is step one!</p>
-        </wiz-step>
-        <wiz-step>
-            <p>This is step two!</p>
-        </wiz-step>
-    </wiz-form>
-    
-That's it. Wizard complete. We can customize it to our will if we like!
+```html
+<wiz-form>
+    <wiz-step>
+        <p>This is step one!</p>
+    </wiz-step>
+    <wiz-step>
+        <p>This is step two!</p>
+    </wiz-step>
+</wiz-form>
+```
 
-    <h1>{{ wizardMeta.activeStepName }}</h1>
-    <wiz-form wizard-meta="wizardMeta">
-        <wiz-step name="Step One!">
-            <p>This is step one!</p>
-        </wiz-step>
-        <wiz-step name="Step Two!">
-            <p>This is step two!</p>
-        </wiz-step>
-    </wiz-form>
+That's it. Wizard complete. We can customize it to our will if we like!
+```html
+<h1>{{ wizardMeta.activeStepName }}</h1>
+<wiz-form wizard-meta="wizardMeta">
+    <wiz-step name="Step One!">
+        <p>This is step one!</p>
+    </wiz-step>
+    <wiz-step name="Step Two!">
+        <p>This is step two!</p>
+    </wiz-step>
+</wiz-form>
+```
 
 That'll show the name of the active step in the h1 tag at the top. We can also access the current step and step counts through wizard-meta too, which is two-way bound. (Though we're still in early days, so probably would be a bad idea to change those variables yourself.)
 
 If we wanted to use a progress bar instead of a title, we could look at the Bootstrap bars...
 
-    <div class="progress-bar" role="progressbar"
-         aria-valuenow="{{ wizardMeta.activeStep }}"
-         aria-valuemin="0"
-         aria-valuemax="{{ wizardMeta.totalSteps }}">
-    </div>
-    <wiz-form wizard-meta="wizardMeta">
-        <wiz-step>
-            <p>0%</p>
-        </wiz-step>
-        <wiz-step>
-            <p>25%</p>
-        </wiz-step>
-        <wiz-step>
-            <p>50%</p>
-        </wiz-step>
-        <wiz-step>
-            <p>75%</p>
-        </wiz-step>
-    </wiz-form>
+```html
+<div class="progress-bar" role="progressbar"
+     aria-valuenow="{{ wizardMeta.activeStep }}"
+     aria-valuemin="0"
+     aria-valuemax="{{ wizardMeta.totalSteps }}">
+</div>
+<wiz-form wizard-meta="wizardMeta">
+    <wiz-step>
+        <p>0%</p>
+    </wiz-step>
+    <wiz-step>
+        <p>25%</p>
+    </wiz-step>
+    <wiz-step>
+        <p>50%</p>
+    </wiz-step>
+    <wiz-step>
+        <p>75%</p>
+    </wiz-step>
+</wiz-form>
+```
     
 Or something to that effect.
 
 We can display errors and disable the next button with the ready-check property for wiz-step.
 
-    <wiz-form wizard-meta="wizardMeta">
-        <wiz-step ready-check="myValidation()">
-            <p>This is step one!</p>
-        </wiz-step>
-        <wiz-step name="Step Two!">
-            <p>This is step two!</p>
-        </wiz-step>
-    </wiz-form>
+```html
+<wiz-form wizard-meta="wizardMeta">
+    <wiz-step ready-check="myValidation()">
+        <p>This is step one!</p>
+    </wiz-step>
+    <wiz-step name="Step Two!">
+        <p>This is step two!</p>
+    </wiz-step>
+</wiz-form>
+```
     
 By returning an Object with an 'error' member on our scope, we can specify an error message to be displayed.
 
-    myValidation = ->
-        if somethingIsValid()
-            return {}
-        else
-            return { error: "You dun goof'd!" }
+```coffeescript
+myValidation = ->
+    if somethingIsValid()
+        return {}
+    else
+        return { error: "You dun goof'd!" }
+```
 
 Room for refinement on that one.
 
 We can also rename our buttons, too
 
-    <wiz-form wizard-meta="wizardMeta">
-        <wiz-step>
-            <p>This is step one!</p>
-        </wiz-step>
-        <wiz-step next-text="GO!" previous-text="UNGO!">
-            <p>This is step two!</p>
-        </wiz-step>
-    </wiz-form>
+```html
+<wiz-form wizard-meta="wizardMeta">
+    <wiz-step>
+        <p>This is step one!</p>
+    </wiz-step>
+    <wiz-step next-text="GO!" previous-text="UNGO!">
+        <p>This is step two!</p>
+    </wiz-step>
+</wiz-form>
+```
 
 We can also specify a on-finish attribute at the wiz-form level
 
-    <wiz-form on-finish="saveData()">
-    </wiz-form>
+```html
+<wiz-form on-finish="saveData()">
+</wiz-form>
+```
 
 It works with ngRepeat
 
-    <wiz-form on-finish="saveData()">
-        <div ng-repeat="foo in bars">
-            <wiz-step>
-                {{ foo }}!
-            </wiz-step>
-        </div>
-    </wiz-form>
+```html
+<wiz-form on-finish="saveData()">
+    <div ng-repeat="foo in bars">
+        <wiz-step>
+            {{ foo }}!
+        </wiz-step>
+    </div>
+</wiz-form>
+```
 
 Or your own directives...
 
-    <wiz-form wizard-meta="wizardMeta">
-        <wiz-step>
-            <something></something>
-        </wiz-step>
-    </wiz-form>
+```html
+<wiz-form wizard-meta="wizardMeta">
+    <wiz-step>
+        <something></something>
+    </wiz-step>
+</wiz-form>
+```
