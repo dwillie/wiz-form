@@ -8,20 +8,22 @@ angular.module("wiz", [])
   <div ng-transclude class="inner">
   </div>
 
-  <div class="row">
+  <div>
 
-    <div class="pull-left">
-      <button class="btn btn-default" ng-click="previousStep()" ng-show="currentStep > 0">
+    <div class="wizard-left-block">
+      <button class="btn-wizard-previous" ng-click="previousStep()" ng-show="currentStep > 0">
         {{ previousText() || 'Previous' }}
       </button>
     </div>
 
-    <div class="pull-right">
-      <div class="row error">
-        <span ng-show="isError"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>
-        <button class="btn btn-primary" ng-click="nextStep()">
-          <span ng-hide="lastStep()">{{ nextText() || 'Next' }}</span>
-          <span ng-show="lastStep()">{{ nextText() || 'Finish' }}</span>
+    <div class="wizard-right-block">
+      <div class="wizard-error">
+        <span ng-show="isError()">{{ message.error }}</span>
+        <button class="btn-wizard-next" ng-click="nextStep()" ng-hide="lastStep()">
+          {{ nextText() || 'Next' }}
+        </button>
+        <button class="btn-wizard-finish" ng-click="nextStep()" ng-show="lastStep()">
+          {{ nextText() || 'Finish' }}
         </button>
       </div>
     </div>
@@ -84,6 +86,30 @@ angular.module("wiz", [])
       if $scope.wizardMeta && $scope.steps[$scope.currentStep] && $scope.steps[$scope.currentStep].name
         $scope.wizardMeta.activeStep     = $scope.currentStep
         $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name
+
+    $scope.$watch 'wizardMeta.activeStep', ->
+      unless $scope.wizardMeta?
+        return
+
+      while $scope.currentStep < $scope.wizardMeta.activeStep && !$scope.isError()
+        $scope.nextStep()
+      while $scope.currentStep > $scope.wizardMeta.activeStep && !$scope.isError()
+        $scope.previousStep()
+
+      # If there was an error, the activestep and name will be wrong in the wizard meta as they will be what the
+      # external source set them to.
+      if $scope.isError()
+        $scope.wizardMeta.activeStep     = $scope.currentStep
+        $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name
+
+    $scope.$watch 'wizardMeta.activeStepName', ->
+      unless $scope.wizardMeta?
+        return
+
+      if $scope.steps[$scope.currentStep].name != $scope.wizardMeta.activeStepName
+        for step, i in $scope.steps
+          if step.name == $scope.wizardMeta.activeStepName
+            $scope.wizardMeta.activeStep = i
 
     return this
 

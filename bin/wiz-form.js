@@ -1,7 +1,7 @@
 angular.module('wiz', []).directive('wizForm', function () {
   return {
     restrict: 'E',
-    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div class="row">\n\n    <div class="pull-left">\n      <button class="btn btn-default" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="pull-right">\n      <div class="row error">\n        <span ng-show="isError"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>\n        <button class="btn btn-primary" ng-click="nextStep()">\n          <span ng-hide="lastStep()">{{ nextText() || \'Next\' }}</span>\n          <span ng-show="lastStep()">{{ nextText() || \'Finish\' }}</span>\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
+    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div>\n\n    <div class="pull-left">\n      <button class="btn-wizard-previous" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="pull-right">\n      <div class="error">\n        <span ng-show="isError()"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>\n        <button class="btn-wizard-next" ng-click="nextStep()" ng-hide="lastStep()">\n          {{ nextText() || \'Next\' }}\n        </button>\n        <button class="btn-wizard-finish" ng-click="nextStep()" ng-show="lastStep()">\n          {{ nextText() || \'Finish\' }}\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
     transclude: true,
     replace: true,
     scope: {
@@ -70,6 +70,40 @@ angular.module('wiz', []).directive('wizForm', function () {
           if ($scope.wizardMeta && $scope.steps[$scope.currentStep] && $scope.steps[$scope.currentStep].name) {
             $scope.wizardMeta.activeStep = $scope.currentStep;
             return $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name;
+          }
+        });
+        $scope.$watch('wizardMeta.activeStep', function () {
+          if ($scope.wizardMeta == null) {
+            return;
+          }
+          while ($scope.currentStep < $scope.wizardMeta.activeStep && !$scope.isError()) {
+            $scope.nextStep();
+          }
+          while ($scope.currentStep > $scope.wizardMeta.activeStep && !$scope.isError()) {
+            $scope.previousStep();
+          }
+          if ($scope.isError()) {
+            $scope.wizardMeta.activeStep = $scope.currentStep;
+            return $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name;
+          }
+        });
+        $scope.$watch('wizardMeta.activeStepName', function () {
+          var i, step, _i, _len, _ref, _results;
+          if ($scope.wizardMeta == null) {
+            return;
+          }
+          if ($scope.steps[$scope.currentStep].name !== $scope.wizardMeta.activeStepName) {
+            _ref = $scope.steps;
+            _results = [];
+            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+              step = _ref[i];
+              if (step.name === $scope.wizardMeta.activeStepName) {
+                _results.push($scope.wizardMeta.activeStep = i);
+              } else {
+                _results.push(void 0);
+              }
+            }
+            return _results;
           }
         });
         return this;
