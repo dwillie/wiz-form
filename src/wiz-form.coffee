@@ -10,19 +10,19 @@ angular.module("wiz", [])
 
   <div>
 
-    <div class="wizard-left-block">
-      <button class="btn-wizard-previous" ng-click="previousStep()" ng-show="currentStep > 0">
+    <div class="wizard-control previous">
+      <button class="wizard-btn previous" ng-click="previousStep()" ng-show="currentStep > 0">
         {{ previousText() || 'Previous' }}
       </button>
     </div>
 
-    <div class="wizard-right-block">
-      <div class="wizard-error">
+    <div class="wizard-control next">
+      <div class="error">
         <span ng-show="isError()">{{ message.error }}</span>
-        <button class="btn-wizard-next" ng-click="nextStep()" ng-hide="lastStep()">
+        <button class="wizard-btn next" ng-click="nextStep()" ng-hide="lastStep()">
           {{ nextText() || 'Next' }}
         </button>
-        <button class="btn-wizard-finish" ng-click="nextStep()" ng-show="lastStep()">
+        <button class="wizard-btn finish" ng-click="nextStep()" ng-show="lastStep()">
           {{ nextText() || 'Finish' }}
         </button>
       </div>

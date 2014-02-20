@@ -1,7 +1,7 @@
 angular.module('wiz', []).directive('wizForm', function () {
   return {
     restrict: 'E',
-    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div>\n\n    <div class="pull-left">\n      <button class="btn-wizard-previous" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="pull-right">\n      <div class="error">\n        <span ng-show="isError()"><i class="fa fa-exclamation-triangle"></i>{{ message.error }}</span>\n        <button class="btn-wizard-next" ng-click="nextStep()" ng-hide="lastStep()">\n          {{ nextText() || \'Next\' }}\n        </button>\n        <button class="btn-wizard-finish" ng-click="nextStep()" ng-show="lastStep()">\n          {{ nextText() || \'Finish\' }}\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
+    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div>\n\n    <div class="wizard-control previous">\n      <button class="wizard-btn previous" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="wizard-control next">\n      <div class="error">\n        <span ng-show="isError()">{{ message.error }}</span>\n        <button class="wizard-btn next" ng-click="nextStep()" ng-hide="lastStep()">\n          {{ nextText() || \'Next\' }}\n        </button>\n        <button class="wizard-btn finish" ng-click="nextStep()" ng-show="lastStep()">\n          {{ nextText() || \'Finish\' }}\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
     transclude: true,
     replace: true,
     scope: {
