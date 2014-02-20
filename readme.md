@@ -10,7 +10,7 @@ wiz-form supports the following:
 * Error messages on failed ready-check
 * Next/Previous/Finish button text override
 * Step naming
-* wizard-meta allowing access to internal wizard info, current step index, total number of steps and 'name' of the current step
+* wizard-meta allowing access to internal wizard info, current step index, total number of steps and 'name' of the current step, as well as controlling the form by changing wizardMeta.activeStep / activeStepName
 * Everything optional with (hopefully) reasonable defaults
 
 Happy to hear suggestions on the direction of wiz
@@ -60,7 +60,7 @@ That's it. Wizard complete. We can customize it to our will if we like!
 </wiz-form>
 ```
 
-That'll show the name of the active step in the h1 tag at the top. We can also access the current step and step counts through wizard-meta too, which is two-way bound. (Though we're still in early days, so probably would be a bad idea to change those variables yourself.)
+That'll show the name of the active step in the h1 tag at the top. We can also access the current step and step counts through wizard-meta too, which is two-way bound. Changes you make to the wizardMeta activeStep and activeStepName will affect the wizard's state.
 
 If we wanted to use a progress bar instead of a title, we could look at the Bootstrap bars...
 
