@@ -8,7 +8,7 @@ angular.module("wiz", [])
   <div ng-transclude class="inner">
   </div>
 
-  <div>
+  <div ng-show="steps[currentStep].show_controls()">
 
     <div class="wizard-control previous">
       <button class="wizard-btn previous" ng-click="previousStep()" ng-show="currentStep > 0">
@@ -123,14 +123,18 @@ angular.module("wiz", [])
     readyCheck:   "&"
     nextText:     "@"
     previousText: "@"
+    showControls: "&"
   link: ($scope, elem, attrs, wizFormCtrl) ->
     $scope.wizFormCtrl = wizFormCtrl
     unless attrs.readyCheck
       $scope.readyCheck = null
+    unless attrs.showControls
+      $scope.showControls = -> true
     $scope.stepIndex = wizFormCtrl.registerStep({
       name:          attrs.name,
       element:       elem,
-      ready_check:   $scope.readyCheck
-      next_text:     $scope.nextText
-      previous_text: $scope.previousText
+      ready_check:   $scope.readyCheck,
+      next_text:     $scope.nextText,
+      previous_text: $scope.previousText,
+      show_controls: $scope.showControls
     })

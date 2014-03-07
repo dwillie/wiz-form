@@ -1,7 +1,7 @@
 angular.module('wiz', []).directive('wizForm', function () {
   return {
     restrict: 'E',
-    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div>\n\n    <div class="wizard-control previous">\n      <button class="wizard-btn previous" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="wizard-control next">\n      <div class="error">\n        <span ng-show="isError()">{{ message.error }}</span>\n        <button class="wizard-btn next" ng-click="nextStep()" ng-hide="lastStep()">\n          {{ nextText() || \'Next\' }}\n        </button>\n        <button class="wizard-btn finish" ng-click="nextStep()" ng-show="lastStep()">\n          {{ nextText() || \'Finish\' }}\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
+    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div ng-show="steps[currentStep].show_controls()">\n\n    <div class="wizard-control previous">\n      <button class="wizard-btn previous" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="wizard-control next">\n      <div class="error">\n        <span ng-show="isError()">{{ message.error }}</span>\n        <button class="wizard-btn next" ng-click="nextStep()" ng-hide="lastStep()">\n          {{ nextText() || \'Next\' }}\n        </button>\n        <button class="wizard-btn finish" ng-click="nextStep()" ng-show="lastStep()">\n          {{ nextText() || \'Finish\' }}\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
     transclude: true,
     replace: true,
     scope: {
@@ -120,19 +120,26 @@ angular.module('wiz', []).directive('wizForm', function () {
     scope: {
       readyCheck: '&',
       nextText: '@',
-      previousText: '@'
+      previousText: '@',
+      showControls: '&'
     },
     link: function ($scope, elem, attrs, wizFormCtrl) {
       $scope.wizFormCtrl = wizFormCtrl;
       if (!attrs.readyCheck) {
         $scope.readyCheck = null;
       }
+      if (!attrs.showControls) {
+        $scope.showControls = function () {
+          return true;
+        };
+      }
       return $scope.stepIndex = wizFormCtrl.registerStep({
         name: attrs.name,
         element: elem,
         ready_check: $scope.readyCheck,
         next_text: $scope.nextText,
-        previous_text: $scope.previousText
+        previous_text: $scope.previousText,
+        show_controls: $scope.showControls
       });
     }
   };
