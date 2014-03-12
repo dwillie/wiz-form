@@ -40,7 +40,10 @@ angular.module("wiz", [])
   controller: ($scope) ->
     $scope.steps       = []
     $scope.currentStep = 0
-
+    if $scope.wizardMeta?
+      $scope.wizardMeta.activeStep = 0
+      $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name
+      
     @registerStep = (stepObject) ->
       $scope.steps.push stepObject
       if $scope.wizardMeta
