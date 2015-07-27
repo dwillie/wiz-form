@@ -1,7 +1,7 @@
 angular.module('wiz', []).directive('wizForm', function () {
   return {
     restrict: 'E',
-    template: '<div class="wizard-body">\n  \n  <div ng-transclude class="inner">\n  </div>\n\n  <div ng-show="steps[currentStep].show_controls()">\n\n    <div class="wizard-control previous">\n      <button class="wizard-btn previous" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="wizard-control next">\n      <div class="error">\n        <span ng-show="isError()">{{ message.error }}</span>\n        <button class="wizard-btn next" ng-click="nextStep()" ng-hide="lastStep()">\n          {{ nextText() || \'Next\' }}\n        </button>\n        <button class="wizard-btn finish" ng-click="nextStep()" ng-show="lastStep()">\n          {{ nextText() || \'Finish\' }}\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
+    template: '<div class="wizard-body">\n\n  <div ng-transclude class="inner">\n  </div>\n\n  <div ng-show="steps[currentStep].show_controls()">\n\n    <div class="wizard-control previous">\n      <button class="wizard-btn previous" ng-click="previousStep()" ng-show="currentStep > 0">\n        {{ previousText() || \'Previous\' }}\n      </button>\n    </div>\n\n    <div class="wizard-control next">\n      <div class="error">\n        <span ng-show="isError()">{{ message.error }}</span>\n        <button class="wizard-btn next" ng-click="nextStep()" ng-hide="lastStep()">\n          {{ nextText() || \'Next\' }}\n        </button>\n        <button class="wizard-btn finish" ng-click="nextStep()" ng-show="lastStep()">\n          {{ nextText() || \'Finish\' }}\n        </button>\n      </div>\n    </div>\n\n  </div>\n</div>',
     transclude: true,
     replace: true,
     scope: {
@@ -13,6 +13,10 @@ angular.module('wiz', []).directive('wizForm', function () {
       function ($scope) {
         $scope.steps = [];
         $scope.currentStep = 0;
+        if ($scope.wizardMeta != null) {
+          $scope.wizardMeta.activeStep = 0;
+          $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name;
+        }
         this.registerStep = function (stepObject) {
           $scope.steps.push(stepObject);
           if ($scope.wizardMeta) {
@@ -50,6 +54,7 @@ angular.module('wiz', []).directive('wizForm', function () {
         };
         $scope.nextStep = function () {
           var readyCheck;
+          $scope.message = void 0;
           readyCheck = $scope.steps[$scope.currentStep].ready_check;
           if (readyCheck != null) {
             $scope.message = readyCheck();
@@ -57,7 +62,6 @@ angular.module('wiz', []).directive('wizForm', function () {
           if ($scope.isError()) {
             return;
           }
-          $scope.message = null;
           if ($scope.lastStep()) {
             if ($scope.onFinish) {
               return $scope.onFinish();

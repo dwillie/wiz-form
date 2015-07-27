@@ -4,7 +4,7 @@ angular.module("wiz", [])
   restrict: "E"
   template: """
 <div class="wizard-body">
-  
+
   <div ng-transclude class="inner">
   </div>
 
@@ -43,7 +43,7 @@ angular.module("wiz", [])
     if $scope.wizardMeta?
       $scope.wizardMeta.activeStep = 0
       $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name
-      
+
     @registerStep = (stepObject) ->
       $scope.steps.push stepObject
       if $scope.wizardMeta
@@ -72,13 +72,13 @@ angular.module("wiz", [])
     $scope.lastStep = ->
       $scope.currentStep >= $scope.steps.length - 1
     $scope.nextStep = ->
+      $scope.message = undefined
       readyCheck = $scope.steps[$scope.currentStep].ready_check
       if readyCheck?
         $scope.message = readyCheck()
       if $scope.isError()
         return
 
-      $scope.message = null
       if $scope.lastStep()
         if $scope.onFinish
           $scope.onFinish()
