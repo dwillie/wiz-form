@@ -15,12 +15,14 @@ angular.module('wiz', []).directive('wizForm', function () {
         $scope.currentStep = 0;
         if ($scope.wizardMeta != null) {
           $scope.wizardMeta.activeStep = 0;
-          $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name;
         }
         this.registerStep = function (stepObject) {
           $scope.steps.push(stepObject);
           if ($scope.wizardMeta) {
             $scope.wizardMeta.totalSteps = $scope.steps.length;
+            if ($scope.steps.length === 1) {
+              $scope.wizardMeta.activeStepName = $scope.steps[0].name;
+            }
           }
           return $scope.steps.length - 1;
         };
@@ -58,9 +60,9 @@ angular.module('wiz', []).directive('wizForm', function () {
           readyCheck = $scope.steps[$scope.currentStep].ready_check;
           if (readyCheck != null) {
             $scope.message = readyCheck();
-          }
-          if ($scope.isError()) {
-            return;
+            if ($scope.isError()) {
+              return;
+            }
           }
           if ($scope.lastStep()) {
             if ($scope.onFinish) {
@@ -71,7 +73,7 @@ angular.module('wiz', []).directive('wizForm', function () {
           }
         };
         $scope.$watch('currentStep', function () {
-          if ($scope.wizardMeta && $scope.steps[$scope.currentStep] && $scope.steps[$scope.currentStep].name) {
+          if ($scope.wizardMeta && $scope.steps[$scope.currentStep]) {
             $scope.wizardMeta.activeStep = $scope.currentStep;
             return $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name;
           }
@@ -80,11 +82,17 @@ angular.module('wiz', []).directive('wizForm', function () {
           if ($scope.wizardMeta == null) {
             return;
           }
-          while ($scope.currentStep < $scope.wizardMeta.activeStep && !$scope.isError()) {
+          while ($scope.currentStep < $scope.wizardMeta.activeStep) {
             $scope.nextStep();
+            if ($scope.isError()) {
+              break;
+            }
           }
-          while ($scope.currentStep > $scope.wizardMeta.activeStep && !$scope.isError()) {
+          while ($scope.currentStep > $scope.wizardMeta.activeStep) {
             $scope.previousStep();
+            if ($scope.isError()) {
+              break;
+            }
           }
           if ($scope.isError()) {
             $scope.wizardMeta.activeStep = $scope.currentStep;
