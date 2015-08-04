@@ -42,12 +42,13 @@ angular.module("wiz", [])
     $scope.currentStep = 0
     if $scope.wizardMeta?
       $scope.wizardMeta.activeStep = 0
-      $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name
 
     @registerStep = (stepObject) ->
       $scope.steps.push stepObject
       if $scope.wizardMeta
         $scope.wizardMeta.totalSteps = $scope.steps.length
+        if $scope.steps.length == 1
+          $scope.wizardMeta.activeStepName = $scope.steps[0].name
 
       return $scope.steps.length - 1
 
