@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head ng-app="app">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+  <script type="text/javascript" src="../bin/wiz-form.js"></script>
+</head>
+
+<body ng-controller="AppCtrl">
+    <h1>WizForm Example</h1>
+
+    <button ng-click="forward()">GOGO</button>
+    <wiz-form wizard-meta="wizardMeta">
+        <wiz-step>
+            This is the most basic form of the wizard step.
+        </wiz-step>
+
+        <wiz-step next-text="tick dat box" ready-check="checkReady()">
+          You must click this button in order to conintue:
+          <button ng-click="readify()">Click me</button>
+        </wiz-step>
+
+        <wiz-step>
+          Last Page
+        </wiz-step>
+    </wiz-form>
+</body>
+</html>
+
+<script>
+ var wizFormExampleApp = angular
+ .module("app", ["wiz"])
+ .controller("AppCtrl", function($scope) {
+   $scope.wizardMeta = {};
+   $scope.isReady = false;
+   $scope.readify = function() {
+     $scope.isReady = true;
+   };
+
+   $scope.forward = function() {
+     $scope.wizardMeta.activeStep += 1;
+   };
+
+   $scope.checkReady = function() {
+     console.log("Ready checking..");
+     if ($scope.isReady) {
+       return;
+     } else {
+       return { error: "You have the check the box first m80" };
+     }
+   };
+
+ });
+
+
+</script>
