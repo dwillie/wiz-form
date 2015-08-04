@@ -77,8 +77,8 @@ angular.module("wiz", [])
       readyCheck = $scope.steps[$scope.currentStep].ready_check
       if readyCheck?
         $scope.message = readyCheck()
-      if $scope.isError()
-        return
+        if $scope.isError()
+          return
 
       if $scope.lastStep()
         if $scope.onFinish
@@ -87,7 +87,7 @@ angular.module("wiz", [])
         $scope.currentStep += 1
 
     $scope.$watch 'currentStep', ->
-      if $scope.wizardMeta && $scope.steps[$scope.currentStep] && $scope.steps[$scope.currentStep].name
+      if $scope.wizardMeta && $scope.steps[$scope.currentStep]
         $scope.wizardMeta.activeStep     = $scope.currentStep
         $scope.wizardMeta.activeStepName = $scope.steps[$scope.currentStep].name
 
@@ -95,10 +95,14 @@ angular.module("wiz", [])
       unless $scope.wizardMeta?
         return
 
-      while $scope.currentStep < $scope.wizardMeta.activeStep && !$scope.isError()
+      while $scope.currentStep < $scope.wizardMeta.activeStep
         $scope.nextStep()
-      while $scope.currentStep > $scope.wizardMeta.activeStep && !$scope.isError()
+        if $scope.isError()
+          break
+      while $scope.currentStep > $scope.wizardMeta.activeStep
         $scope.previousStep()
+        if $scope.isError()
+          break
 
       # If there was an error, the activestep and name will be wrong in the wizard meta as they will be what the
       # external source set them to.
